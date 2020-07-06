@@ -2,18 +2,25 @@
 
 // #include "linkedlist.hpp"
 
+
 template<class T> Node<T> * LinkedList<T>::NewNode(const T data, Node<T> * next, Node<T> * prev) const
 {
+
     Node<T> * node = new Node<T>;
     node->data = data;
     node->next = next;
     node->prev = prev;
+    std::cout << __FILE__ << ": " << __LINE__ << ": zarezerwowano " << sizeof(Node<T>) << " bajtow.\n";
     return node;
 }
 
 template<class T> Node<T> * LinkedList<T>::NewNode() const
 {
-    return (new Node<T>);
+//    static long long int allocated_mem = 0;
+    Node<T> * node = new Node<T>;
+//    allocated_mem += sizeof(Node<T>);
+//    std::cout << __FILE__ << ": " << __LINE__ << ": zarezerwowano " << sizeof(Node<T>) << " bajty. Razem: " << allocated_mem << " ( " << node << " )\n";
+    return node;
 }
 
 template<class T> LinkedList<T>::LinkedList()
@@ -70,7 +77,7 @@ template<class T> void LinkedList<T>::print() const
     Node<T> * iter = head->next;
     while (iter != tail)
     {
-        std::cout << iter->data << " ";
+        std::cout << (iter->data).e << " ";
         iter = iter->next;
     }
     std::cout << "\n";
