@@ -10,6 +10,9 @@ const std::string VERSION = "0.1";
 
 int main()
 {
+    Log log(2);
+
+    log.LogMessage("MESSAGE", 2, __FILE__, __LINE__);
     STAMP(VERSION);
 
     LOG_MESSAGE("Point 1", __FILE__, __LINE__);

@@ -15,12 +15,12 @@ void LOG_MESSAGE(const std::string & message, const std::string & FILE, const in
 ////////////////////////////////////////////////////////////
 Log::Log(const int level) : level(level), info("info: "), warn("warning: "), error("error: ")
 {
-    std::cout << "Konstruktor klasy `Log`\n";
+    std::cout << __FILE__ << ": " << __LINE__ << ": " << "Konstruktor klasy `Log`\n";
 }
 ////////////////////////////////////////////////////////////
 Log::~Log()
 {
-    std::cout << "Destruktor klasy `Log`\n";
+    std::cout << __FILE__ << ": " << __LINE__ << ": " << "Destruktor klasy `Log`\n";
 }
 ////////////////////////////////////////////////////////////
 void Log::SetLevel(const int level)
