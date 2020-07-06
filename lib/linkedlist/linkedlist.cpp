@@ -31,4 +31,4 @@ template<class T> LinkedList<T>::~LinkedList()
 
         delete head;
     }
-}
+}   
