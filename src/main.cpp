@@ -13,12 +13,15 @@ int main()
     STAMP(VERSION);
 
     LOG_MESSAGE("Point 1", __FILE__, __LINE__);
-    Graph<V, E> graph;
+    Graph graph(10);
     LOG_MESSAGE("Point 2", __FILE__, __LINE__);
-    V vertex(234, false);
-    E edge(30);
+    graph.AddDirectedEdge(0, 1, 1);
+    graph.AddDirectedEdge(1, 3, 10);
+    graph.AddDirectedEdge(2, 5, 16);
+    graph.AddDirectedEdge(1, 8, 11);
     LOG_MESSAGE("Point 3", __FILE__, __LINE__);
-    graph.AddDirectedEdge(0, 1, edge);
+    
+    graph.Print();
     LOG_MESSAGE("Point 4", __FILE__, __LINE__);
     return 0;
 }
