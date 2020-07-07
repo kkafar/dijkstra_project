@@ -1,6 +1,8 @@
 #ifndef __LOG_HPP__
 #define __LOG_HPP__
+
 #include <iostream>
+#include <varargs.h>
 
 void STAMP(const std::string &);
 

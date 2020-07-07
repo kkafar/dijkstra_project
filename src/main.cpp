@@ -5,26 +5,30 @@
 #include <string>
 #include "./../lib/headers.hpp"
 
-const std::string VERSION = "0.1";
+const std::string VERSION = "v0.2_MYVEC_TEST";
 
 
 int main()
 {
-    Log log(2);
-
-    log.LogMessage("MESSAGE", 2, __FILE__, __LINE__);
     STAMP(VERSION);
 
-    LOG_MESSAGE("Point 1", __FILE__, __LINE__);
-    Graph graph(10);
-    LOG_MESSAGE("Point 2", __FILE__, __LINE__);
-    graph.AddDirectedEdge(0, 1, 1);
-    graph.AddDirectedEdge(1, 3, 10);
-    graph.AddDirectedEdge(2, 5, 16);
-    graph.AddDirectedEdge(1, 8, 11);
-    LOG_MESSAGE("Point 3", __FILE__, __LINE__);
+    MyVec<int> vec(2);
+
+    for (int i = 0; i < 300; ++i)
+        vec.PushBack(i);
+
+    for (int i = 0; i < 10; ++i)
+        std::cout << vec[i] << " ";
     
-    graph.Print();
-    LOG_MESSAGE("Point 4", __FILE__, __LINE__);
+    std::cout << "\n";
+
+    vec[2] = 50;
+
+    for (int i = 0; i < 10; ++i)
+        std::cout << vec[i] << " ";
+
+    std::cout << "\n";
+
+    
     return 0;
 }
