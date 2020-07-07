@@ -28,8 +28,8 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
     // zwalaniamy wcześniej wykorzystywaną przestrzeń
     if (current_size >= size)
     {
-        LOG_MESSAGE("Zwiekszam rozmiar wektora", __FILE__, __LINE__);
         int new_size = static_cast<int>(size * EXT_FACTOR);
+        LogMessage(__FILE__, __LINE__, "Zwiekszam rozmiar wektora do ", new_size);
         Type * new_vec = new Type[new_size];
 
         for (int i = 0; i < size; ++i)
