@@ -2,13 +2,17 @@
 #define __LOG_HPP__
 
 #include <iostream>
-#include <varargs.h>
 
 void STAMP(const std::string &);
 
 void LOG_MESSAGE(const std::string & message, const std::string & FILE, const int & LINE);
 
-
+template<class... Args> void LogMessage(const std::string & FILE, const int LINE, Args... args)
+{
+    std::cout << FILE << ": " << LINE << ": ";
+    (std::cout << ... << args);
+    std::cout << "\n";
+}
 
 
 class Log
