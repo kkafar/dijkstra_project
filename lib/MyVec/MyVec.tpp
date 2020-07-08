@@ -1,3 +1,4 @@
+// K. Kafara
 
 ////////////////////////////////////////////////////////////
 // Szablony metod szablonu klasy `MyVec`. 
@@ -56,5 +57,19 @@ template<class Type> Type & MyVec<Type>::operator[](const int index) const
         std::cout << "Zakanczam dzialanie programu z kodem 1\n";
         exit(1);
     }
+}
+////////////////////////////////////////////////////////////
+template<class Type> [[nodiscard]] int MyVec<Type>::GetSize() const
+{
+    return current_size;
+}
+////////////////////////////////////////////////////////////
+template<class Type> void MyVec<Type>::PopBack()
+{
+    if (current_size > 0) 
+        --current_size;
+
+    else
+        LogMessage(__FILE__, __LINE__, "Proba usuniecia z pustego wektora!");
 }
 ////////////////////////////////////////////////////////////

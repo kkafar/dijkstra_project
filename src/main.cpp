@@ -5,7 +5,7 @@
 #include <string>
 #include "./../lib/headers.hpp"
 
-const std::string VERSION = "v0.2_MYVEC_TEST";
+const std::string VERSION = "v0.3 queue-dev";
 
 
 int main()
@@ -27,8 +27,22 @@ int main()
     for (int i = 0; i < 10; ++i)
         std::cout << vec[i] << " ";
 
-    std::cout << "\n";
+    std::cout << "\n" << vec.GetSize() << "\n";
+    // vec.GetSize();
 
-    
+
+    std::cout << "++++++++++++++++++++++++++++++++++++++++++++\n";
+    MinPriorQueue<int> queue;
+
+    for (int i = 0; i < 10; ++i)
+        queue.Push(i, 10 - i);
+
+    for (int i = 0; i < 10; ++i)
+    {
+        std::cout << queue.Front() << " ";
+        queue.Pop();
+    }
+
+    std::cout << "++++++++++++++++++++++++++++++++++++++++++++\n";
     return 0;
 }
