@@ -20,7 +20,7 @@ template<class Type> MyVec<Type>::MyVec() : size(INITIAL_NO_PARAM_SIZE), current
 template<class Type> MyVec<Type>::~MyVec() 
 {
     LOG_MESSAGE("Destruktor klasy MyVec", __FILE__, __LINE__);
-    delete head;
+    delete[] head;
 }
 ////////////////////////////////////////////////////////////
 template<class Type> void MyVec<Type>::PushBack(const Type x)
@@ -38,7 +38,7 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
             *(new_vec + i) = *(head + i);    
         }
 
-        delete head;
+        delete[] head;
         size = new_size;
         head = new_vec;
     }

@@ -14,27 +14,40 @@
 template<class Type> struct QueueNode
 {
     ////////////////////////////////////////////////////////////
-    Type & object;
+    Type object;
     int prior;
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
-    // @brief Konstruktor klasy MinPriorQueue<Type>::QueueNode (PARAM)
+    // @brief Konstruktor klasy QueueNode<Type> (PARAM)
     // @param object - referencja do obiektu dodawanego do kolejki
     ////////////////////////////////////////////////////////////
-    QueueNode(Type & object, int prior);
+    QueueNode(Type& object, int prior);
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
-    // @brief Konstruktor klasy MinPriorQueue<Type>::QueueNode (NO_PARAM)
+    // @brief Konstruktor klasy QueueNode<Type> (NO_PARAM)
     ////////////////////////////////////////////////////////////
     QueueNode();
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
-    // @brief Destruktor klasy MinPriorQueue<Type>::QueueNode
+    // @brief Konstruktor kopiujący klasy QueueNode<Type> (PARAM)
+    ////////////////////////////////////////////////////////////
+    QueueNode(QueueNode<Type>&);
+    ////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////
+    // @brief Destruktor klasy QueueNode<Type>
     ////////////////////////////////////////////////////////////
     ~QueueNode();
+    ////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////
+    // @brief Operator przypisania
+    ////////////////////////////////////////////////////////////
+    QueueNode<Type>& operator = (const QueueNode<Type> &);
     ////////////////////////////////////////////////////////////
 };
 ////////////////////////////////////////////////////////////
@@ -96,7 +109,7 @@ public:
     ////////////////////////////////////////////////////////////
     // @brief Dodaje @param obj do kolejki z priorytetem @param priority
     ////////////////////////////////////////////////////////////
-    void Push(Type obj, const int priority);
+    void Push(Type& obj, const int priority);
     ////////////////////////////////////////////////////////////
 
 
@@ -104,7 +117,7 @@ public:
     // @brief Zwraca (referencja) pierwszy element w kolejce (o najniższym priorytecie)
     // @attr nodiscard
     ////////////////////////////////////////////////////////////
-    [[nodiscard]] Type & Front() const;
+    [[nodiscard]] Type& Front() const;
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
@@ -121,7 +134,7 @@ public:
 ////////////////////////////////////////////////////////////
 // Szablony metod klasy `QueueNode`
 ////////////////////////////////////////////////////////////
-template<class Type> QueueNode<Type>::QueueNode(Type & object, int prior) : object(object), prior(prior)
+template<class Type> QueueNode<Type>::QueueNode(Type& object, int prior) : object(object), prior(prior)
 {
     LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
 }
@@ -129,11 +142,23 @@ template<class Type> QueueNode<Type>::QueueNode(Type & object, int prior) : obje
 template<class Type> QueueNode<Type>::QueueNode()
 {
     LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
-}
+} 
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::~QueueNode()
 {
     LogMessage(__FILE__, __LINE__, "Destruktor klasy QueueNode<Type>, adres: ", this);
+}
+////////////////////////////////////////////////////////////
+template<class Type> QueueNode<Type>& QueueNode<Type>::operator=(const QueueNode<Type>& obj)
+{
+    this->object = obj.object;
+    this->prior = obj.prior;
+    return (*this);
+} 
+////////////////////////////////////////////////////////////
+template<class Type> QueueNode<Type>::QueueNode(QueueNode<Type>& obj)
+{
+    *(this) = obj;
 }
 ////////////////////////////////////////////////////////////
 
@@ -170,7 +195,6 @@ template<class Type> [[nodiscard]] int MinPriorQueue<Type>::Right(const int inde
 template<class Type> void MinPriorQueue<Type>::Heapify(int index)
 {
     int smallest_prior_index = index, left, right, size = vec.GetSize();
-    QueueNode<Type> buff;
 
     while (index < size)
     {
@@ -185,7 +209,7 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
 
         if (smallest_prior_index != index)
         {
-            buff = vec[smallest_prior_index];
+            QueueNode<Type> buff(vec[smallest_prior_index]);
             vec[smallest_prior_index] = vec[index];
             vec[index] = buff;
             index = smallest_prior_index;
@@ -196,26 +220,26 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
     }
 }
 //////////////////////////////////////////////////////////// 
-template<class Type> void MinPriorQueue<Type>::Push(Type obj, const int priority)
+template<class Type> void MinPriorQueue<Type>::Push(Type& obj, const int priority)
 {
     vec.PushBack(QueueNode<Type>(obj, priority));
 
     // jedziemy w górę drzewa, przywracając własność kopca
     int index = vec.GetSize() - 1;
-    QueueNode<Type> buff;
+
     while (Parent(index) >= 0 && vec[Parent(index)].prior < vec[index].prior)
     {
-        buff = vec[Parent(index)];
+        QueueNode<Type> buff(vec[Parent(index)]);
         vec[Parent(index)] = vec[index];
         vec[index] = buff;
         index = Parent(index);
     }
 }
 ////////////////////////////////////////////////////////////
-template<class Type> [[nodiscard]] Type & MinPriorQueue<Type>::Front() const
+template<class Type> [[nodiscard]] Type& MinPriorQueue<Type>::Front() const
 {
     if (vec.GetSize() > 0)
-        return vec[0];
+        return vec[0].object;
 
     else
         LogMessage(__FILE__, __LINE__, "Proba odczytu z pustej kolejki");
