@@ -14,23 +14,23 @@ int main()
 
     MyVec<int> vec(2);
 
-    for (int i = 0; i < 300; ++i)
+    for (int i = 0; i < 5; ++i)
         vec.PushBack(i);
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 5; ++i)
         std::cout << vec[i] << " ";
     
     std::cout << "\n";
 
     vec[2] = 50;
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 5; ++i)
         std::cout << vec[i] << " ";
 
     std::cout << "\n" << vec.GetSize() << "\n";
     // vec.GetSize();
 
-
+/* 
     std::cout << "++++++++++++++++++++++++++++++++++++++++++++\n";
     MinPriorQueue<int> queue;
 
@@ -43,6 +43,6 @@ int main()
         queue.Pop();
     }
 
-    std::cout << "++++++++++++++++++++++++++++++++++++++++++++\n";
+    std::cout << "\n++++++++++++++++++++++++++++++++++++++++++++\n"; */
     return 0;
 }
