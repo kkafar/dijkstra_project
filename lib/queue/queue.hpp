@@ -5,8 +5,7 @@
 
 #include "../MyVec/MyVec.hpp"
 #include "../log/log.hpp"
-
-
+#include <stdlib.h>
 
 ////////////////////////////////////////////////////////////
 // Element kolejki. Stowarzyszamy obiekt wstawiany do kolejki z piorytetem.

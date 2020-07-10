@@ -7,21 +7,36 @@
 
 
 ////////////////////////////////////////////////////////////
+// @brief Logger
+// ≥ 3 - informacje o konstrukorach/destruktorze QueueNode<Type>
+// ≥ 2 - informacje o konstruktorach/destruktorze MinPriorQueue<Type>
+// ≥ 1 - próba odczytu z pustej kolejki
+// ≥ 0 - usuwanie z pustej kolejki
+////////////////////////////////////////////////////////////
+Log queue_logger;
+////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////
 // Szablony metod klasy `QueueNode`
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::QueueNode(Type& object, int prior) : object(object), prior(prior)
 {
-    LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
+    // LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (PARAM), adres:", this);
 }
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::QueueNode()
 {
-    LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
+    // LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
 } 
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::~QueueNode()
 {
-    LogMessage(__FILE__, __LINE__, "Destruktor klasy QueueNode<Type>, adres: ", this);
+    // LogMessage(__FILE__, __LINE__, "Destruktor klasy QueueNode<Type>, adres: ", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Destruktor klasy QueueNode<Type>, adres: ", this);
+
 }
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>& QueueNode<Type>::operator=(const QueueNode<Type>& obj)
@@ -43,12 +58,16 @@ template<class Type> QueueNode<Type>::QueueNode(QueueNode<Type>& obj)
 ////////////////////////////////////////////////////////////
 template<class Type> MinPriorQueue<Type>::MinPriorQueue()
 {
-    LogMessage(__FILE__, __LINE__, "Konstruktor klasy MinPriorQueue, adres obiektu: ", this);
+    // LogMessage(__FILE__, __LINE__, "Konstruktor klasy MinPriorQueue, adres obiektu: ", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MinPriorQueue, adres obiektu: ", this);
+    // vec = new MyVec<QueueNode<Type>>;
 }
 ////////////////////////////////////////////////////////////
 template<class Type> MinPriorQueue<Type>::~MinPriorQueue()
 {
-    LogMessage(__FILE__, __LINE__, "Destruktor klasy MinPriorQueue, adres obiektu: ", this);
+    // LogMessage(__FILE__, __LINE__, "Destruktor klasy MinPriorQueue, adres obiektu: ", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Destruktor klasy MinPriorQueue, adres obiektu: ", this);
+    // delete vec;
 }
 ////////////////////////////////////////////////////////////
 template<class Type> [[nodiscard]] int MinPriorQueue<Type>::Parent(const int index) const
@@ -117,7 +136,11 @@ template<class Type> [[nodiscard]] Type& MinPriorQueue<Type>::Front() const
         return vec[0].object;
 
     else
-        LogMessage(__FILE__, __LINE__, "Proba odczytu z pustej kolejki");
+    {
+        // LogMessage(__FILE__, __LINE__, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
+        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::WARNING, 1, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
+        exit(1);
+    }
 }
 ////////////////////////////////////////////////////////////
 template<class Type> void MinPriorQueue<Type>::Pop()
@@ -131,6 +154,7 @@ template<class Type> void MinPriorQueue<Type>::Pop()
     }
 
     else 
-        LogMessage(__FILE__, __LINE__, "Proba usuniecia elementu z pustej kolejki");
+        // LogMessage(__FILE__, __LINE__, "Proba usuniecia elementu z pustej kolejki");
+        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::ERROR, 0, "Proba usuniecia elementu z pustej kolejki");
 }
 ////////////////////////////////////////////////////////////
