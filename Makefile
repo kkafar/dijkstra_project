@@ -14,6 +14,9 @@ graph.o: ./lib/graph/graph.cpp ./lib/graph/graph.hpp
 #linkedlist.o: ./lib/linkedlist/linkedlist.hpp 
 #	g++ --std=c++17 -c ./lib/linkedlist/linkedlist.hpp -o ./lib/linkedlist/linkedlist.o
 
+run_log:
+	./bin/main > ./bin/output_main.txt
+
 run:
 	./bin/main
 
