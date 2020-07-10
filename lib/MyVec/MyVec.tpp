@@ -37,8 +37,7 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
         {
             *(new_vec + i) = *(head + i);    
         }
-
-        delete[] head;
+        delete[ head;
         size = new_size;
         head = new_vec;
     }
