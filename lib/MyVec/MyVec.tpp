@@ -36,7 +36,7 @@ template<class Type> void MyVec<Type>::FreeVec_Malloc(Type * head)
 ////////////////////////////////////////////////////////////
 template<class Type> MyVec<Type>::MyVec(const int size) : current_size(0)
 {
-    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (PARAM)");
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (PARAM), adres: ", this);
     // LOG_MESSAGE("Konstruktor klsy MyVec (PARAMETRIZED)", __FILE__, __LINE__);
     // potencjalne miejsce błędów (jak powinno być: MyVec::size czy MyVec<Type>::size)
     this->size = static_cast<int>(size * SIZE_FACTOR); 
@@ -47,16 +47,17 @@ template<class Type> MyVec<Type>::MyVec(const int size) : current_size(0)
 ////////////////////////////////////////////////////////////
 template<class Type> MyVec<Type>::MyVec() : size(INITIAL_NO_PARAM_SIZE), current_size(0)
 {
-    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (NO PARAM)");
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (NO PARAM), adres", this);
     // LOG_MESSAGE("Konstruktor klasy MyVec (NO PARAM)", __FILE__, __LINE__);
     // head = new Type[INITIAL_NO_PARAM_SIZE];
     // head = (Type *)(malloc(sizeof(Type) * INITIAL_NO_PARAM_SIZE));
     head = AllocVec_Malloc(sizeof(Type) * INITIAL_NO_PARAM_SIZE);
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Adres początku wektora: ", head);
 }
 ////////////////////////////////////////////////////////////
 template<class Type> MyVec<Type>::~MyVec() 
 {
-    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Destruktor klasy MyVec");
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Destruktor klasy MyVec, adres: ", this);
     // LOG_MESSAGE("Destruktor klasy MyVec", __FILE__, __LINE__);
     // delete[] head;
     // free(head);

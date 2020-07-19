@@ -122,7 +122,7 @@ template<class Type> void MinPriorQueue<Type>::Push(Type obj, const int priority
     // jedziemy w górę drzewa, przywracając własność kopca
     int index = vec.GetSize() - 1;
 
-    while (Parent(index) >= 0 && vec[Parent(index)].prior < vec[index].prior)
+    while (Parent(index) >= 0 && vec[Parent(index)].prior > vec[index].prior)
     {
         QueueNode<Type> buff(vec[Parent(index)]);
         vec[Parent(index)] = vec[index];
