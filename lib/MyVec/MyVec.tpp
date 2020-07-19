@@ -70,7 +70,13 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
     if (current_size >= size)
     {
         int new_size = static_cast<int>(size * EXT_FACTOR);
-        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Zwiekszam rozmiar wektora do ", new_size);
+        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Zwiekszam rozmiar wektora do ", new_size,
+        "\nDotychczasowa zawartosc wektora:");
+        for (int i = 0; i < GetSize(); ++i)
+            std::cout << (*(head + i)).object << " ";
+
+        std::cout << "\n";
+
         // LogMessage(__FILE__, __LINE__, "Zwiekszam rozmiar wektora do ", new_size);
         // Type * new_vec = new Type[new_size];
         Type * new_vec = AllocVec_Malloc(sizeof(Type) * new_size);
@@ -83,6 +89,11 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
         FreeVec_Malloc(head);
         size = new_size;
         head = new_vec;
+        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "\nNowa zawartosc wektora:");
+        for (int i = 0; i < GetSize(); ++i)
+            std::cout << (*(head + i)).object << " ";
+
+        std::cout << "\n";
     }
 
     *(head + current_size) = x;
@@ -95,7 +106,7 @@ template<class Type> Type & MyVec<Type>::operator[](const int index) const
         return *(head + index);
     else
     {
-        // myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::ERROR, 0, "MyVec: operator[]: index poza poprawnym zakresem! index=", index,
+        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::ERROR, 0, "MyVec: operator[]: index poza poprawnym zakresem! index=", index);
         // " zakres: 0-", size - 1, "\nZakanczam dzialanie programu z kodem 1");
         // std::cout << __FILE__ << ": " << __LINE__ << ": " << "MyVec: operator[]: index poza poprawnym zakresem! index=" << index << " zakres: 0-" << size - 1 << "\n";
         // std::cout << "Zakanczam dzialanie programu z kodem 1\n";

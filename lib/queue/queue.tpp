@@ -20,7 +20,7 @@ Log queue_logger;
 ////////////////////////////////////////////////////////////
 // Szablony metod klasy `QueueNode`
 ////////////////////////////////////////////////////////////
-template<class Type> QueueNode<Type>::QueueNode(Type& object, int prior) : object(object), prior(prior)
+template<class Type> QueueNode<Type>::QueueNode(Type object, int prior) : object(object), prior(prior)
 {
     // LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
     queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (PARAM), adres:", this);
@@ -46,7 +46,7 @@ template<class Type> QueueNode<Type>& QueueNode<Type>::operator=(const QueueNode
     return (*this);
 } 
 ////////////////////////////////////////////////////////////
-template<class Type> QueueNode<Type>::QueueNode(QueueNode<Type>& obj)
+template<class Type> QueueNode<Type>::QueueNode(const QueueNode<Type>& obj)
 {
     *(this) = obj;
 }
@@ -114,8 +114,9 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
     }
 }
 //////////////////////////////////////////////////////////// 
-template<class Type> void MinPriorQueue<Type>::Push(Type& obj, const int priority)
+template<class Type> void MinPriorQueue<Type>::Push(Type obj, const int priority)
 {
+
     vec.PushBack(QueueNode<Type>(obj, priority));
 
     // jedziemy w górę drzewa, przywracając własność kopca
@@ -156,5 +157,13 @@ template<class Type> void MinPriorQueue<Type>::Pop()
     else 
         // LogMessage(__FILE__, __LINE__, "Proba usuniecia elementu z pustej kolejki");
         queue_logger.Message(__FILE__, __LINE__, Log::MessageType::ERROR, 0, "Proba usuniecia elementu z pustej kolejki");
+}
+////////////////////////////////////////////////////////////
+template<class Type> [[nodiscard]] bool MinPriorQueue<Type>::IsEmpty() const
+{
+    if (vec.GetSize() > 0)
+        return false;
+
+    return true;
 }
 ////////////////////////////////////////////////////////////

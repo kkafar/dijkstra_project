@@ -5,7 +5,8 @@
 
 #include <stdlib.h>
 #include "../log/log.hpp"
-
+// testy
+#include <iostream>
 
 ////////////////////////////////////////////////////////////
 // Dynamiczna tablica na typ <Type>. Wersja 1.0
@@ -28,7 +29,7 @@ private:
     ////////////////////////////////////////////////////////////
     // Zmienne statyczne służące do inicjalizacji wektora
     ////////////////////////////////////////////////////////////
-    static constexpr int INITIAL_NO_PARAM_SIZE = 250;
+    static constexpr int INITIAL_NO_PARAM_SIZE = 2;
     static constexpr float SIZE_FACTOR = 2.0f;
     static constexpr float EXT_FACTOR = 2.0f;
     ////////////////////////////////////////////////////////////

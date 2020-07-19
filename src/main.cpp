@@ -1,8 +1,9 @@
 // K. Kafara
 
 #define QUEUE_TEST
-#define MYVEC_TEST
+// #defines MYVEC_TEST
 #define LOG
+
 
 ////////////////////////////////////////////////////////////
 // -------
@@ -35,7 +36,7 @@ int main()
     // Ustawienia poszeczególnych loggerów.
     ////////////////////////////////////////////////////////////
     myvec_logger.SetLevel(3);
-    queue_logger.SetLevel(-1);
+    queue_logger.SetLevel(3);
     ////////////////////////////////////////////////////////////
 #endif
 
@@ -45,23 +46,25 @@ int main()
     // Test MyVec
     ////////////////////////////////////////////////////////////
     TEST_BEG("MyVec");
-    MyVec<int> vec(2);
+    {
+        MyVec<int> vec(2);
 
-    for (int i = 0; i < 5; ++i)
-        vec.PushBack(i);
+        for (int i = 0; i < 5; ++i)
+            vec.PushBack(i);
 
-    for (int i = 0; i < 5; ++i)
-        std::cout << vec[i] << " ";
-    
-    std::cout << "\n";
+        for (int i = 0; i < 5; ++i)
+            std::cout << vec[i] << " ";
+        
+        std::cout << "\n";
 
-    vec[2] = 50;
+        vec[2] = 50;
 
-    for (int i = 0; i < 5; ++i)
-        std::cout << vec[i] << " ";
+        for (int i = 0; i < 5; ++i)
+            std::cout << vec[i] << " ";
 
-    std::cout << "\n" << vec.GetSize() << "\n"; 
-    // vec.GetSize();
+        std::cout << "\n" << vec.GetSize() << "\n"; 
+        // vec.GetSize();
+    }
     TEST_END();
     ////////////////////////////////////////////////////////////
 #endif
@@ -71,15 +74,27 @@ int main()
     // Test MinPriorQueue
     ////////////////////////////////////////////////////////////
     TEST_BEG("Queue");
-    MinPriorQueue<int> queue;
-
-    for (int i = 0; i < 10; ++i)
-        queue.Push(i, 10 - i);
-
-    for (int i = 0; i < 10; ++i)
     {
-        std::cout << queue.Front() << " ";
-        queue.Pop();
+        const int size = 5;
+        MinPriorQueue<int> queue;
+
+        for (int i = 0; i < size; ++i)
+            queue.Push(i, i);
+
+        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Wypisuje zawartosc wektora: ");
+        for (int i = 0; i < queue.vec.GetSize(); ++i)
+            std::cout << queue.vec[i].object << " ";
+
+        std::cout << "\n" << queue.vec.GetSize() << NL;
+
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << queue.Front() << " ";
+            queue.Pop();
+        }
+        std::cout << NL;
+
+        if (queue.IsEmpty()) std::cout << "Kolejka jest pusta" << NL;
     }
     TEST_END();
     ////////////////////////////////////////////////////////////
