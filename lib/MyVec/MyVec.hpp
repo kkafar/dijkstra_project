@@ -20,7 +20,7 @@ private:
     // Wskaźnik na pierwszy element tablicy
     Type * head;
     // Wskaźnik na ostatni poprawny element tablicy. Wskazuje na nullptr, jeżeli w tablicy nie ma żadnego elementu
-    Type * tail;
+    // Type * tail;
     // Rozmiar zarezerwowanego obszaru
     int size;
     // obecny rozmiar tablicy

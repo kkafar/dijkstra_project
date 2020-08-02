@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////
 // @brief Logger
 // ≥ 2 - info o konstrukorach/destruktorze
-// ≥ 1 - powiększanie wektora
+// ≥ 1 - powiększanie wektora, wyświetlanie adresów
 // ≥ 0 - usuwanie z pustego wektora
 ////////////////////////////////////////////////////////////
 Log myvec_logger;
@@ -43,21 +43,23 @@ template<class Type> MyVec<Type>::MyVec(const int size) : current_size(0)
     // head = new Type[this->size];
     // head = (Type *)(malloc(sizeof(Type) * SIZE_FACTOR));
     head = AllocVec_Malloc(sizeof(Type) * (this->size));
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Adres poczatku wektora: ", head);
 } 
 ////////////////////////////////////////////////////////////
 template<class Type> MyVec<Type>::MyVec() : size(INITIAL_NO_PARAM_SIZE), current_size(0)
 {
-    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (NO PARAM), adres", this);
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MyVec (NO PARAM), adres: ", this);
     // LOG_MESSAGE("Konstruktor klasy MyVec (NO PARAM)", __FILE__, __LINE__);
     // head = new Type[INITIAL_NO_PARAM_SIZE];
     // head = (Type *)(malloc(sizeof(Type) * INITIAL_NO_PARAM_SIZE));
     head = AllocVec_Malloc(sizeof(Type) * INITIAL_NO_PARAM_SIZE);
-    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Adres początku wektora: ", head);
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Adres początku wektora: ", head);
 }
 ////////////////////////////////////////////////////////////
 template<class Type> MyVec<Type>::~MyVec() 
 {
     myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Destruktor klasy MyVec, adres: ", this);
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Adres poczatku zwalnianego obszaru: ", head);
     // LOG_MESSAGE("Destruktor klasy MyVec", __FILE__, __LINE__);
     // delete[] head;
     // free(head);
@@ -66,7 +68,8 @@ template<class Type> MyVec<Type>::~MyVec()
 ////////////////////////////////////////////////////////////
 template<class Type> void MyVec<Type>::PushBack(const Type x)
 {
-    // Jeżeli w wektorze brakuje miejsca, to rezerwujemy większą przestrzeń, przepisujemy starą zawartość
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "PushBack(", x.object, ", ", x.prior, "), adres: ", &x);
+    // Jeżeli w wektorze brakuje miejsca, to rezerwujemy większą przestrzeń, przepisujemy starą zawartość,
     // zwalaniamy wcześniej wykorzystywaną przestrzeń
     if (current_size >= size)
     {
@@ -74,7 +77,7 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
         myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Zwiekszam rozmiar wektora do ", new_size,
         "\nDotychczasowa zawartosc wektora:");
         for (int i = 0; i < GetSize(); ++i)
-            std::cout << (*(head + i)).object << " ";
+            std::cout << (head + i)->object << " ";
 
         std::cout << "\n";
 
@@ -83,21 +86,21 @@ template<class Type> void MyVec<Type>::PushBack(const Type x)
         Type * new_vec = AllocVec_Malloc(sizeof(Type) * new_size);
 
         for (int i = 0; i < size; ++i)
-        {
             *(new_vec + i) = *(head + i);    
-        }
+        
         // delete[] head;
         FreeVec_Malloc(head);
         size = new_size;
         head = new_vec;
-        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "\nNowa zawartosc wektora:");
+        myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Nowa zawartosc wektora:");
         for (int i = 0; i < GetSize(); ++i)
-            std::cout << (*(head + i)).object << " ";
+            std::cout << (head + i)->object << " ";
 
         std::cout << "\n";
     }
 
     *(head + current_size) = x;
+    // (*(head + current_size)).obj
     ++current_size;
 }
 ////////////////////////////////////////////////////////////

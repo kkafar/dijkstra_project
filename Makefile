@@ -21,7 +21,7 @@ run:
 	./bin/main
 
 clean: 
-	rm -f -v -i ./src/*.o ./lib/*/*.o ./bin/main
+	rm -f -v ./src/*.o ./lib/*/*.o ./bin/main
 
 
 valg: main.o log.o graph.o

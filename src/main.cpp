@@ -1,7 +1,7 @@
 // K. Kafara
 
 #define QUEUE_TEST
-// #defines MYVEC_TEST
+// #define MYVEC_TEST
 #define LOG
 
 
@@ -90,7 +90,7 @@ int main()
         for (int i = 0; i < size; ++i)
         {
             std::cout << queue.Front() << " ";
-            queue.Pop();
+            queue.Pop(); 
         }
         std::cout << NL;
 

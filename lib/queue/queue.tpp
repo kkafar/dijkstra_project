@@ -39,16 +39,18 @@ template<class Type> QueueNode<Type>::~QueueNode()
 
 }
 ////////////////////////////////////////////////////////////
-template<class Type> QueueNode<Type>& QueueNode<Type>::operator=(const QueueNode<Type>& obj)
+template<class Type> /* QueueNode<Type>& */ void QueueNode<Type>::operator = (const QueueNode<Type>& obj)
 {
     this->object = obj.object;
     this->prior = obj.prior;
-    return (*this);
+    // return (*this);
+    // return (*this)
 } 
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::QueueNode(const QueueNode<Type>& obj)
 {
-    *(this) = obj;
+    this->object = obj.object;
+    this->prior = obj.prior;
 }
 ////////////////////////////////////////////////////////////
 
