@@ -5,10 +5,13 @@
  * kolejki i łatwe przeliczanie indeksów (adresów w pamięci)
  */
 
+#define __LOGS_QUEUE__
+#include <iostream>
+
 
 ////////////////////////////////////////////////////////////
 // @brief Logger
-// ≥ 3 - informacje o konstrukorach/destruktorze QueueNode<Type>
+// ≥ 3 - informacje o konstrukorach/destruktorze QueueNode<Type>, informacje o zamianie (w Heapify())
 // ≥ 2 - informacje o konstruktorach/destruktorze MinPriorQueue<Type>
 // ≥ 1 - próba odczytu z pustej kolejki
 // ≥ 0 - usuwanie z pustej kolejki
@@ -22,21 +25,26 @@ Log queue_logger;
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::QueueNode(Type object, int prior) : object(object), prior(prior)
 {
+#ifdef __LOGS_QUEUE__
     // LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
-    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (PARAM), adres:", this);
+    queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (PARAM), adres: ", this);
+#endif /* __LOGS_QUEUE__ */
 }
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::QueueNode()
 {
+#ifdef __LOGS_QUEUE__
     // LogMessage(__FILE__, __LINE__, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
     queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Konstruktor klasy QueueNode<Type> (NO_PARAM), adres: ", this);
+#endif /* __LOGS_QUEUE__ */
 } 
 ////////////////////////////////////////////////////////////
 template<class Type> QueueNode<Type>::~QueueNode()
 {
+#ifdef __LOGS_QUEUE__
     // LogMessage(__FILE__, __LINE__, "Destruktor klasy QueueNode<Type>, adres: ", this);
     queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Destruktor klasy QueueNode<Type>, adres: ", this);
-
+#endif /* __LOGS_QUEUE__ */
 }
 ////////////////////////////////////////////////////////////
 template<class Type> /* QueueNode<Type>& */ void QueueNode<Type>::operator = (const QueueNode<Type>& obj)
@@ -60,16 +68,20 @@ template<class Type> QueueNode<Type>::QueueNode(const QueueNode<Type>& obj)
 ////////////////////////////////////////////////////////////
 template<class Type> MinPriorQueue<Type>::MinPriorQueue()
 {
+#ifdef __LOGS_QUEUE__
     // LogMessage(__FILE__, __LINE__, "Konstruktor klasy MinPriorQueue, adres obiektu: ", this);
     queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstruktor klasy MinPriorQueue, adres obiektu: ", this);
     // vec = new MyVec<QueueNode<Type>>;
+#endif /* __LOGS_QUEUE__ */
 }
 ////////////////////////////////////////////////////////////
 template<class Type> MinPriorQueue<Type>::~MinPriorQueue()
 {
+#ifdef __LOGS_QUEUE__
     // LogMessage(__FILE__, __LINE__, "Destruktor klasy MinPriorQueue, adres obiektu: ", this);
     queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Destruktor klasy MinPriorQueue, adres obiektu: ", this);
     // delete vec;
+#endif /* __LOGS_QUEUE__ */
 }
 ////////////////////////////////////////////////////////////
 template<class Type> [[nodiscard]] int MinPriorQueue<Type>::Parent(const int index) const
@@ -106,8 +118,18 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
         if (smallest_prior_index != index)
         {
             QueueNode<Type> buff(vec[smallest_prior_index]);
+            
+            #ifdef __LOGS_QUEUE__
+            queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "buff: ", buff.object, " vec[spi]: ", vec[smallest_prior_index].object, " vec[i]: ", vec[index].object);
+            #endif /* __LOGS_QUEUE__ */
+
             vec[smallest_prior_index] = vec[index];
             vec[index] = buff;
+
+            #ifdef __LOGS_QUEUE__
+            queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "buff: ", buff.object, " vec[spi]: ", vec[smallest_prior_index].object, " vec[i]: ", vec[index].object);
+            #endif /* __LOGS_QUEUE__ */
+            
             index = smallest_prior_index;
         }
 
@@ -118,13 +140,11 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
 //////////////////////////////////////////////////////////// 
 template<class Type> void MinPriorQueue<Type>::Push(Type obj, const int priority)
 {
-
     vec.PushBack(QueueNode<Type>(obj, priority));
-
     // jedziemy w górę drzewa, przywracając własność kopca
     int index = vec.GetSize() - 1;
 
-    while (Parent(index) >= 0 && vec[Parent(index)].prior > vec[index].prior)
+    while ( Parent(index) >= 0 && (vec[Parent(index)].prior > vec[index].prior) )
     {
         QueueNode<Type> buff(vec[Parent(index)]);
         vec[Parent(index)] = vec[index];
@@ -140,8 +160,10 @@ template<class Type> [[nodiscard]] Type& MinPriorQueue<Type>::Front() const
 
     else
     {
+        #ifdef __LOGS_QUEUE__
         // LogMessage(__FILE__, __LINE__, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
         queue_logger.Message(__FILE__, __LINE__, Log::MessageType::WARNING, 1, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
+        #endif /* __LOGS_QUEUE__ */
         exit(1);
     }
 }
@@ -155,10 +177,11 @@ template<class Type> void MinPriorQueue<Type>::Pop()
 
         Heapify(0);
     }
-
+#ifdef __LOGS_QUEUE__
     else 
         // LogMessage(__FILE__, __LINE__, "Proba usuniecia elementu z pustej kolejki");
         queue_logger.Message(__FILE__, __LINE__, Log::MessageType::ERROR, 0, "Proba usuniecia elementu z pustej kolejki");
+#endif /* __LOGS_QUEUE__ */
 }
 ////////////////////////////////////////////////////////////
 template<class Type> [[nodiscard]] bool MinPriorQueue<Type>::IsEmpty() const

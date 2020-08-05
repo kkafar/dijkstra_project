@@ -78,10 +78,12 @@ int main()
         const int size = 5;
         MinPriorQueue<int> queue;
 
+        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Adres obiektu `queue`: ", &queue);
+
         for (int i = 0; i < size; ++i)
             queue.Push(i, i);
 
-        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Wypisuje zawartosc wektora: ");
+        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Wypisuje zawartosc wektora: ");
         for (int i = 0; i < queue.vec.GetSize(); ++i)
             std::cout << queue.vec[i].object << " ";
 
@@ -89,7 +91,7 @@ int main()
 
         for (int i = 0; i < size; ++i)
         {
-            std::cout << queue.Front() << " ";
+            std::cout << queue.Front() << "\n";
             queue.Pop(); 
         }
         std::cout << NL;
