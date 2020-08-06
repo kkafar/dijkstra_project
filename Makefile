@@ -1,5 +1,5 @@
 all: main.o log.o graph.o
-	g++ --std=c++17 ./src/main.o ./lib/log/log.o ./lib/graph/graph.o -o ./bin/main
+	g++ --std=c++17 ./src/main.o ./lib/log/log.o ./lib/graph/graph.o -lsfml-graphics -lsfml-window -lsfml-system -o ./bin/main
 
 
 main.o: ./src/main.cpp ./lib/headers.hpp ./lib/linkedlist/linkedlist.hpp ./lib/graph/graph.hpp ./lib/MyVec/MyVec.hpp

@@ -3,6 +3,7 @@
 // #define QUEUE_TEST
 // #define MYVEC_TEST
 // #define LOG
+#define SFML_TEST
 
 
 ////////////////////////////////////////////////////////////
@@ -12,13 +13,14 @@
 #include <iostream>
 #include <string>
 #include "./../lib/headers.hpp"
+#include <SFML/Graphics.hpp>
 ////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////
 // Napis informujący o wersji programu.
 ////////////////////////////////////////////////////////////
-const std::string VERSION = "v0.5 QUEUE DEBUG";
+const std::string VERSION = "v0.6 Running SFML";
 ////////////////////////////////////////////////////////////
 
 
@@ -105,6 +107,34 @@ int main()
     }
     TEST_END();
     ////////////////////////////////////////////////////////////
+#endif
+
+#ifdef SFML_TEST
+    TEST_BEG("Running SFML");
+    {
+        sf::RenderWindow window (sf::VideoMode(800, 600), "TITLE BAR");
+        sf::CircleShape circle(200.f);
+
+        circle.setFillColor(sf::Color::Green);
+
+        while (window.isOpen())
+        {
+            sf::Event event;
+
+            while (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                {
+                    window.close();
+                }
+
+                window.clear();
+                window.draw(circle);
+                window.display();
+            }
+        }       
+    }
+    TEST_END();
 #endif
     return 0;
 }

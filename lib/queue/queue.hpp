@@ -7,7 +7,7 @@
 #include "../log/log.hpp"
 #include <stdlib.h>
 // testy
-#include <iostream>
+// #include <iostream>
 
 ////////////////////////////////////////////////////////////
 // Element kolejki. Stowarzyszamy obiekt wstawiany do kolejki z piorytetem.
