@@ -1,30 +1,110 @@
 // K. Kafara
 
+// #define QUEUE_TEST
+// #define MYVEC_TEST
+// #define LOG
+
+
+////////////////////////////////////////////////////////////
+// -------
+////////////////////////////////////////////////////////////
 // debug, testing
 #include <iostream>
 #include <string>
 #include "./../lib/headers.hpp"
+////////////////////////////////////////////////////////////
 
-const std::string VERSION = "0.1";
+
+////////////////////////////////////////////////////////////
+// Napis informujący o wersji programu.
+////////////////////////////////////////////////////////////
+const std::string VERSION = "v0.5 QUEUE DEBUG";
+////////////////////////////////////////////////////////////
+
 
 
 int main()
 {
-    Log log(2);
-
-    log.LogMessage("MESSAGE", 2, __FILE__, __LINE__);
+    ////////////////////////////////////////////////////////////
+    // Wyświetlanie informacji o programie.
+    ////////////////////////////////////////////////////////////
     STAMP(VERSION);
+    ////////////////////////////////////////////////////////////
 
-    LOG_MESSAGE("Point 1", __FILE__, __LINE__);
-    Graph graph(10);
-    LOG_MESSAGE("Point 2", __FILE__, __LINE__);
-    graph.AddDirectedEdge(0, 1, 1);
-    graph.AddDirectedEdge(1, 3, 10);
-    graph.AddDirectedEdge(2, 5, 16);
-    graph.AddDirectedEdge(1, 8, 11);
-    LOG_MESSAGE("Point 3", __FILE__, __LINE__);
-    
-    graph.Print();
-    LOG_MESSAGE("Point 4", __FILE__, __LINE__);
+#ifdef LOG
+    ////////////////////////////////////////////////////////////
+    // Ustawienia poszeczególnych loggerów.
+    ////////////////////////////////////////////////////////////
+    myvec_logger.SetLevel(2);
+    queue_logger.SetLevel(2);
+    ////////////////////////////////////////////////////////////
+#endif
+
+
+#ifdef MYVEC_TEST
+    ////////////////////////////////////////////////////////////
+    // Test MyVec
+    ////////////////////////////////////////////////////////////
+    TEST_BEG("MyVec");
+    {
+        const size_t size = 5;
+        MyVec<QueueNode<int>> vec;
+
+        for (int i = 0; i < size; ++i)
+            vec.PushBack(QueueNode<int>(i, i));
+
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
+        }
+        
+        std::cout << "\n";
+
+        vec[2] = QueueNode<int>(50, 10);
+
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
+        }
+
+        std::cout << "\n" << vec.GetSize() << "\n"; 
+        // vec.GetSize();
+    }
+    TEST_END();
+    ////////////////////////////////////////////////////////////
+#endif
+
+#ifdef QUEUE_TEST
+    ////////////////////////////////////////////////////////////
+    // Test MinPriorQueue
+    ////////////////////////////////////////////////////////////
+    TEST_BEG("Queue");
+    {
+        const int size = 5;
+        MinPriorQueue<int> queue;
+
+        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Adres obiektu `queue`: ", &queue);
+
+        for (int i = 0; i < size; ++i)
+            queue.Push(i, i);
+
+        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Wypisuje zawartosc wektora: ");
+        for (int i = 0; i < queue.vec.GetSize(); ++i)
+            std::cout << queue.vec[i].object << " ";
+
+        std::cout << "\n" << queue.vec.GetSize() << NL;
+
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << queue.Front() << "\n";
+            queue.Pop(); 
+        }
+        std::cout << NL;
+
+        if (queue.IsEmpty()) std::cout << "Kolejka jest pusta" << NL;
+    }
+    TEST_END();
+    ////////////////////////////////////////////////////////////
+#endif
     return 0;
 }
