@@ -1,12 +1,12 @@
 // K. Kafara
 
 /**
- * Teraz idea jest taka, że stworzymy sobie coś na zasadzie wektora ze standardowej biblioteki, co pozwoli na linearyzację `podstawy`
+ * Idea jest taka, że stworzymy sobie coś na zasadzie wektora ze standardowej biblioteki, co pozwoli na linearyzację `podstawy`
  * kolejki i łatwe przeliczanie indeksów (adresów w pamięci)
  */
 
-#define __LOGS_QUEUE__
-#include <iostream>
+// #define __LOGS_QUEUE__
+// #include <iostream>
 
 
 ////////////////////////////////////////////////////////////
@@ -119,16 +119,16 @@ template<class Type> void MinPriorQueue<Type>::Heapify(int index)
         {
             QueueNode<Type> buff(vec[smallest_prior_index]);
             
-            #ifdef __LOGS_QUEUE__
+#ifdef __LOGS_QUEUE__
             queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "buff: ", buff.object, " vec[spi]: ", vec[smallest_prior_index].object, " vec[i]: ", vec[index].object);
-            #endif /* __LOGS_QUEUE__ */
+#endif /* __LOGS_QUEUE__ */
 
             vec[smallest_prior_index] = vec[index];
             vec[index] = buff;
 
-            #ifdef __LOGS_QUEUE__
+#ifdef __LOGS_QUEUE__
             queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "buff: ", buff.object, " vec[spi]: ", vec[smallest_prior_index].object, " vec[i]: ", vec[index].object);
-            #endif /* __LOGS_QUEUE__ */
+#endif /* __LOGS_QUEUE__ */
             
             index = smallest_prior_index;
         }
@@ -160,10 +160,10 @@ template<class Type> [[nodiscard]] Type& MinPriorQueue<Type>::Front() const
 
     else
     {
-        #ifdef __LOGS_QUEUE__
+#ifdef __LOGS_QUEUE__
         // LogMessage(__FILE__, __LINE__, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
         queue_logger.Message(__FILE__, __LINE__, Log::MessageType::WARNING, 1, "Proba odczytu z pustej kolejki. Zakonczenie dzialania programu z kodem 1.");
-        #endif /* __LOGS_QUEUE__ */
+#endif /* __LOGS_QUEUE__ */
         exit(1);
     }
 }

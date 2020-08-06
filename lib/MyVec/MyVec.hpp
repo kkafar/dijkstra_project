@@ -30,7 +30,7 @@ private:
     // Zmienne statyczne służące do inicjalizacji wektora
     ////////////////////////////////////////////////////////////
     static constexpr int INITIAL_NO_PARAM_SIZE = 2;
-    static constexpr float SIZE_FACTOR = 2.0f;
+    static constexpr float SIZE_FACTOR = 3.0f;
     static constexpr float EXT_FACTOR = 2.0f;
     ////////////////////////////////////////////////////////////
 public:

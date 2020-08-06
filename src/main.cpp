@@ -1,8 +1,8 @@
 // K. Kafara
 
-#define QUEUE_TEST
+// #define QUEUE_TEST
 // #define MYVEC_TEST
-#define LOG
+// #define LOG
 
 
 ////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Napis informujący o wersji programu.
 ////////////////////////////////////////////////////////////
-const std::string VERSION = "v0.4 myvec-log";
+const std::string VERSION = "v0.5 QUEUE DEBUG";
 ////////////////////////////////////////////////////////////
 
 
@@ -35,8 +35,8 @@ int main()
     ////////////////////////////////////////////////////////////
     // Ustawienia poszeczególnych loggerów.
     ////////////////////////////////////////////////////////////
-    myvec_logger.SetLevel(3);
-    queue_logger.SetLevel(3);
+    myvec_logger.SetLevel(2);
+    queue_logger.SetLevel(2);
     ////////////////////////////////////////////////////////////
 #endif
 
@@ -47,20 +47,25 @@ int main()
     ////////////////////////////////////////////////////////////
     TEST_BEG("MyVec");
     {
-        MyVec<int> vec(2);
+        const size_t size = 5;
+        MyVec<QueueNode<int>> vec;
 
-        for (int i = 0; i < 5; ++i)
-            vec.PushBack(i);
+        for (int i = 0; i < size; ++i)
+            vec.PushBack(QueueNode<int>(i, i));
 
-        for (int i = 0; i < 5; ++i)
-            std::cout << vec[i] << " ";
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
+        }
         
         std::cout << "\n";
 
-        vec[2] = 50;
+        vec[2] = QueueNode<int>(50, 10);
 
-        for (int i = 0; i < 5; ++i)
-            std::cout << vec[i] << " ";
+        for (int i = 0; i < size; ++i)
+        {
+            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
+        }
 
         std::cout << "\n" << vec.GetSize() << "\n"; 
         // vec.GetSize();
@@ -78,7 +83,7 @@ int main()
         const int size = 5;
         MinPriorQueue<int> queue;
 
-        queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Adres obiektu `queue`: ", &queue);
+        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Adres obiektu `queue`: ", &queue);
 
         for (int i = 0; i < size; ++i)
             queue.Push(i, i);

@@ -11,7 +11,7 @@
 // Analogicznie z delete i free. 
 ////////////////////////////////////////////////////////////
 
-#define __LOGS_MYVEC__
+// #define __LOGS_MYVEC__
 
 ////////////////////////////////////////////////////////////
 // @brief Logger
@@ -28,7 +28,7 @@ Log myvec_logger;
 ////////////////////////////////////////////////////////////
 template<class Type> [[nodiscard]] Type * MyVec<Type>::AllocVec_Malloc(size_t alloc_size)
 {
-    return (Type *)(malloc(sizeof(alloc_size)));
+    return (Type *)(malloc(alloc_size));
 }
 ////////////////////////////////////////////////////////////
 template<class Type> void MyVec<Type>::FreeVec_Malloc(Type * head)
@@ -67,6 +67,7 @@ template<class Type> MyVec<Type>::MyVec() : size(INITIAL_NO_PARAM_SIZE), current
 
 #ifdef __LOGS_MYVEC__
     myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Wektor: ", head, " -- ", head + sizeof(Type) * INITIAL_NO_PARAM_SIZE);
+    myvec_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Rozmiar obiektu: ", sizeof(Type));
 #endif /* __LOGS_MYVEC__ */
 }
 ////////////////////////////////////////////////////////////
