@@ -112,9 +112,24 @@ int main()
 #ifdef SFML_TEST
     TEST_BEG("Running SFML");
     {
-        sf::RenderWindow window (sf::VideoMode(800, 600), "TITLE BAR");
-        sf::CircleShape circle(200.f);
+        ////////////////////////////////////////////////////////////
+        // Ustawienia okna
+        ////////////////////////////////////////////////////////////
+        constexpr size_t WINDOW_WIDTH = 512;
+        constexpr size_t WINDOW_HEIGHT = 512;
+        constexpr size_t TILE_SIZE = 32;
+        constexpr size_t TILE_NUMBER = WINDOW_HEIGHT / TILE_SIZE;
+        const std::string WINDOW_NAME = "Visualising Dijkstra's Shortest Path Algorithm";
+        ////////////////////////////////////////////////////////////
 
+        ////////////////////////////////////////////////////////////
+        // Utworzenie okna zgodnie z ustawieniami. 
+        ////////////////////////////////////////////////////////////
+        sf::RenderWindow window (sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME);
+        ////////////////////////////////////////////////////////////
+
+
+        sf::CircleShape circle(WINDOW_HEIGHT / 2);
         circle.setFillColor(sf::Color::Green);
 
         while (window.isOpen())
@@ -123,7 +138,7 @@ int main()
 
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
+                if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) == true)
                 {
                     window.close();
                 }
