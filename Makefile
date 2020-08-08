@@ -1,5 +1,5 @@
 all: main.o log.o graph.o
-	g++ --std=c++17 ./src/main.o ./lib/log/log.o ./lib/graph/graph.o -lsfml-graphics -lsfml-window -lsfml-system -o ./bin/main
+	g++ --std=c++17 -pthread -lsfml-graphics -lsfml-window -lsfml-system ./src/main.o ./lib/log/log.o ./lib/graph/graph.o -o ./bin/main
 
 
 main.o: ./src/main.cpp ./lib/headers.hpp ./lib/linkedlist/linkedlist.hpp ./lib/graph/graph.hpp ./lib/MyVec/MyVec.hpp
@@ -11,7 +11,7 @@ log.o: ./lib/log/log.cpp ./lib/log/log.hpp
 
 
 graph.o: ./lib/graph/graph.cpp ./lib/graph/graph.hpp
-	g++ --std=c++17 -c ./lib/graph/graph.cpp -o ./lib/graph/graph.o
+	g++ --std=c++17 -pthread -c ./lib/graph/graph.cpp -o ./lib/graph/graph.o
 
 #linkedlist.o: ./lib/linkedlist/linkedlist.hpp 
 #	g++ --std=c++17 -c ./lib/linkedlist/linkedlist.hpp -o ./lib/linkedlist/linkedlist.o
