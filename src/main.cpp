@@ -36,8 +36,8 @@ int main()
     ////////////////////////////////////////////////////////////
     // Ustawienia poszeczególnych loggerów.
     ////////////////////////////////////////////////////////////
-    myvec_logger.SetLevel(2);
-    queue_logger.SetLevel(2);
+    myvec_logger.SetLevel(-1);
+    queue_logger.SetLevel(-1);
     ////////////////////////////////////////////////////////////
 #endif
 
@@ -71,7 +71,7 @@ int main()
                 if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) == true)
                     window.close();
                 
-                    
+
 
 
 
