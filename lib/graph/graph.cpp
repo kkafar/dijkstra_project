@@ -3,8 +3,8 @@
 #include "graph.hpp"
 #include "./../log/log.hpp"
 
-#include <chrono>
-#include <thread>
+// #include <chrono>
+// #include <thread>
 
 ////////////////////////////////////////////////////////////
 // @brief Logger
@@ -55,10 +55,10 @@ void Graph::AddDirectedEdge(const int b, const int e, const int weight)
     graph[b].PushBack(Edge(e, weight));
 }
 ////////////////////////////////////////////////////////////
-void Graph::Wait(const int & miliseconds) const
-{
-    std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
-}
+// void Graph::Wait(const int & miliseconds) const
+// {
+//     std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
+// }
 ////////////////////////////////////////////////////////////
 
 
@@ -68,7 +68,7 @@ void Graph::Dijkstra(const int s, const int t)
 
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Dijstra(", s, ", ", t, ")");
 
-    Wait(1000);
+    // Wait(1000);
 
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Odczekano sekunde");
 
@@ -83,7 +83,7 @@ void Graph::Dijkstra(const int s, const int t)
     // kolor na zielony (jako obecnie rozważany wierzchołek)
     graph[s].SetColour(0, 255, 0);
 
-    Wait(1000);
+    // Wait(1000);
     
     int current_vertex, edge_end, distance;
 
