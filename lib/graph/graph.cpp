@@ -3,6 +3,7 @@
 #include "graph.hpp"
 #include "./../log/log.hpp"
 
+// #define __GRAPH_LOG__
 // #include <chrono>
 // #include <thread>
 
@@ -18,20 +19,19 @@ Graph::Edge::Edge(const int e, const int weight) : e(e), weight(weight) {}
 ////////////////////////////////////////////////////////////
 Graph::Vertex::Vertex(sf::Color color, bool visited) : color(color), visited(visited) {}
 ////////////////////////////////////////////////////////////
-Graph::Vertex::Vertex() 
-{
-    visited = false;
-    color.r = color.g = color.b = 0;
-    color.a = 255;
-    // rect.setSize({tile_size, tile_size});
-}
-////////////////////////////////////////////////////////////
 void Graph::Vertex::SetColour(const int& r, const int& g, const int& b, const int& alpha)
 {
     color.r = r;
     color.g = g;
     color.b = b;
     color.a = alpha;
+}
+////////////////////////////////////////////////////////////
+Graph::Vertex::Vertex() 
+{
+    visited = false;
+    SetColour(0, 0, 0, 255);
+    // rect.setSize({tile_size, tile_size});
 }
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetVisited(const bool & val) { visited = val; }
@@ -64,6 +64,7 @@ void Graph::AddDirectedEdge(const int b, const int e, const int weight)
 
 void Graph::Dijkstra(const int s, const int t)
 {
+#ifdef __GRAPH_LOG__
     graph_logger.SetLevel(3);
 
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Dijstra(", s, ", ", t, ")");
@@ -71,9 +72,9 @@ void Graph::Dijkstra(const int s, const int t)
     // Wait(1000);
 
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 3, "Odczekano sekunde");
+#endif /* __GRAPH_LOG__ */
 
     MinPriorQueue<int> queue;
-
 
     // dodajemy wierzchołek startowy do kolejki. 
     queue.Push(s, 0);
@@ -81,7 +82,7 @@ void Graph::Dijkstra(const int s, const int t)
     // Ustawiamy parametry dla wierzchołka startowego
     graph[s].SetDistance(0);
     // kolor na zielony (jako obecnie rozważany wierzchołek)
-    graph[s].SetColour(0, 255, 0);
+    // graph[s].SetColour(0, 255, 0);
 
     // Wait(1000);
     
