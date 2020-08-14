@@ -9,9 +9,7 @@
 ////////////////////////////////////////////////////////////
 // -------
 ////////////////////////////////////////////////////////////
-// debug, testing
 #include "./../lib/headers.hpp"
-// #include <SFML/Graphics.hpp>
 ////////////////////////////////////////////////////////////
 
 
@@ -57,13 +55,14 @@ int main()
         sf::RenderWindow window (sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), WINDOW_NAME);
         ////////////////////////////////////////////////////////////
 
+        ////////////////////////////////////////////////////////////
         sf::RectangleShape rect;
         rect.setFillColor(sf::Color::Green);
         rect.setPosition(300, 300);
-
+        ////////////////////////////////////////////////////////////
 
         // Graph graph(TILE_NUMBER * TILE_NUMBER);
-        
+        ////////////////////////////////////////////////////////////
         while (window.isOpen())
         {
             sf::Event event;
@@ -73,15 +72,12 @@ int main()
                 if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) == true)
                     window.close();
                 
-
-
-
-
                 window.clear();
                 window.draw(rect);
                 window.display();
             }
         }       
+        ////////////////////////////////////////////////////////////
     }
     TEST_END();
 #endif
