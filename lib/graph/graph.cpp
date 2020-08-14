@@ -62,7 +62,7 @@ void Graph::AddDirectedEdge(const int b, const int e, const int weight)
 ////////////////////////////////////////////////////////////
 
 
-void Graph::Dijkstra(const int s, const int t)
+void Graph::Dijkstra(const int s, const int t, MyVec<AlgLog> & log)
 {
 #ifdef __GRAPH_LOG__
     graph_logger.SetLevel(3);
@@ -131,4 +131,12 @@ void Graph::Dijkstra(const int s, const int t)
         
     } 
 } */
+////////////////////////////////////////////////////////////
+void Graph::DrawTo(sf::RenderWindow& window) const
+{
+    for (int i = 0; i < rank; ++i)
+    {
+        window.draw(graph[i].rect);
+    }
+}
 ////////////////////////////////////////////////////////////

@@ -10,10 +10,8 @@
 // -------
 ////////////////////////////////////////////////////////////
 // debug, testing
-#include <iostream>
-#include <string>
 #include "./../lib/headers.hpp"
-#include <SFML/Graphics.hpp>
+// #include <SFML/Graphics.hpp>
 ////////////////////////////////////////////////////////////
 
 
@@ -59,8 +57,12 @@ int main()
         sf::RenderWindow window (sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), WINDOW_NAME);
         ////////////////////////////////////////////////////////////
 
+        sf::RectangleShape rect;
+        rect.setFillColor(sf::Color::Green);
+        rect.setPosition(300, 300);
 
-        Graph graph(TILE_NUMBER * TILE_NUMBER);
+
+        // Graph graph(TILE_NUMBER * TILE_NUMBER);
         
         while (window.isOpen())
         {
@@ -76,7 +78,7 @@ int main()
 
 
                 window.clear();
-                // window.draw(circle);
+                window.draw(rect);
                 window.display();
             }
         }       
