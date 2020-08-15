@@ -9,20 +9,15 @@
 ////////////////////////////////////////////////////////////
 // -------
 ////////////////////////////////////////////////////////////
-// debug, testing
-#include <iostream>
-#include <string>
 #include "./../lib/headers.hpp"
-#include <SFML/Graphics.hpp>
 ////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////
 // Napis informujący o wersji programu.
 ////////////////////////////////////////////////////////////
-const std::string VERSION = "v0.6 Running SFML";
+const std::string VERSION = "v0.7 Printing graph";
 ////////////////////////////////////////////////////////////
-
 
 
 int main()
@@ -37,75 +32,8 @@ int main()
     ////////////////////////////////////////////////////////////
     // Ustawienia poszeczególnych loggerów.
     ////////////////////////////////////////////////////////////
-    myvec_logger.SetLevel(2);
-    queue_logger.SetLevel(2);
-    ////////////////////////////////////////////////////////////
-#endif
-
-
-#ifdef MYVEC_TEST
-    ////////////////////////////////////////////////////////////
-    // Test MyVec
-    ////////////////////////////////////////////////////////////
-    TEST_BEG("MyVec");
-    {
-        const size_t size = 5;
-        MyVec<QueueNode<int>> vec;
-
-        for (int i = 0; i < size; ++i)
-            vec.PushBack(QueueNode<int>(i, i));
-
-        for (int i = 0; i < size; ++i)
-        {
-            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
-        }
-        
-        std::cout << "\n";
-
-        vec[2] = QueueNode<int>(50, 10);
-
-        for (int i = 0; i < size; ++i)
-        {
-            std::cout << &vec[i] << ":  (" << vec[i].object << ", " << vec[i].prior << ")\n";
-        }
-
-        std::cout << "\n" << vec.GetSize() << "\n"; 
-        // vec.GetSize();
-    }
-    TEST_END();
-    ////////////////////////////////////////////////////////////
-#endif
-
-#ifdef QUEUE_TEST
-    ////////////////////////////////////////////////////////////
-    // Test MinPriorQueue
-    ////////////////////////////////////////////////////////////
-    TEST_BEG("Queue");
-    {
-        const int size = 5;
-        MinPriorQueue<int> queue;
-
-        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Adres obiektu `queue`: ", &queue);
-
-        for (int i = 0; i < size; ++i)
-            queue.Push(i, i);
-
-        // queue_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Wypisuje zawartosc wektora: ");
-        for (int i = 0; i < queue.vec.GetSize(); ++i)
-            std::cout << queue.vec[i].object << " ";
-
-        std::cout << "\n" << queue.vec.GetSize() << NL;
-
-        for (int i = 0; i < size; ++i)
-        {
-            std::cout << queue.Front() << "\n";
-            queue.Pop(); 
-        }
-        std::cout << NL;
-
-        if (queue.IsEmpty()) std::cout << "Kolejka jest pusta" << NL;
-    }
-    TEST_END();
+    // myvec_logger.SetLevel(-1);
+    // queue_logger.SetLevel(-1);
     ////////////////////////////////////////////////////////////
 #endif
 
@@ -113,25 +41,41 @@ int main()
     TEST_BEG("Running SFML");
     {
         ////////////////////////////////////////////////////////////
-        // Ustawienia okna
+        // Timer
         ////////////////////////////////////////////////////////////
-        constexpr size_t WINDOW_WIDTH = 512;
-        constexpr size_t WINDOW_HEIGHT = 512;
-        constexpr size_t TILE_SIZE = 32;
-        constexpr size_t TILE_NUMBER = WINDOW_HEIGHT / TILE_SIZE;
-        const std::string WINDOW_NAME = "Visualising Dijkstra's Shortest Path Algorithm";
+        Timer timer;
         ////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////
+        // Do zbierania danych o koljenych posunięciach algorytmu
+        ////////////////////////////////////////////////////////////
+        MyVec<AlgLog> log;
+        ////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////
+        // Tworzenie grafu.  
+        ////////////////////////////////////////////////////////////
+        timer.Start();
+        Graph graph(settings::tiles::TILES_IN_COL * settings::tiles::TILES_IN_ROW);
+        timer.Stop();
+        std::cout << "Czas alokacji grafu: " << timer.GetElapsedTime() << "\n";
+        graph.Dijkstra(settings::START, settings::END, log);
+        ////////////////////////////////////////////////////////////
+
 
         ////////////////////////////////////////////////////////////
         // Utworzenie okna zgodnie z ustawieniami. 
         ////////////////////////////////////////////////////////////
-        sf::RenderWindow window (sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME);
+        sf::RenderWindow window(sf::VideoMode(settings::window::WIDTH, settings::window::HEIGHT), settings::window::NAME);
+        window.setFramerateLimit(settings::window::MAX_FRAMERATE);
         ////////////////////////////////////////////////////////////
 
 
-        sf::CircleShape circle(WINDOW_HEIGHT / 2);
-        circle.setFillColor(sf::Color::Green);
-
+        ////////////////////////////////////////////////////////////
+        // Główna pętla programu
+        ////////////////////////////////////////////////////////////
         while (window.isOpen())
         {
             sf::Event event;
@@ -139,15 +83,16 @@ int main()
             while (window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) == true)
-                {
                     window.close();
-                }
-
-                window.clear();
-                window.draw(circle);
-                window.display();
             }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(settings::FRAME_WAIT_TIME));
+            window.clear();
+            graph.DrawTo(window);
+            window.display();
+            graph.MakeStep(log);
         }       
+        ////////////////////////////////////////////////////////////
     }
     TEST_END();
 #endif
