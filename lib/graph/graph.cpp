@@ -3,35 +3,53 @@
 #include "graph.hpp"
 #include "./../log/log.hpp"
 
-// #define __GRAPH_LOG__
+#define __GRAPH_LOG__
 // #include <chrono>
 // #include <thread>
+
+
 
 ////////////////////////////////////////////////////////////
 // @brief Logger
 // ???
 ////////////////////////////////////////////////////////////
-// Log graph_logger;
+Log graph_logger;
 ////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////
 Graph::Edge::Edge(const int e, const int weight) : e(e), weight(weight) {}
 ////////////////////////////////////////////////////////////
-Graph::Vertex::Vertex(sf::Color color, bool visited) : color(color), visited(visited) {}
+Graph::Vertex::Vertex(sf::Color color, bool visited) : visited(visited) 
+{
+    static int id = 0;
+    rect.setFillColor(color);
+    rect.setPosition
+    ({ 
+        (id * settings::tiles::TILE_WIDTH) % settings::window::WIDTH,
+        (id * settings::tiles::TILE_WIDTH * settings::tiles::TILE_HEIGHT) / settings::window::WIDTH
+    });
+    ++id;
+    // rect.setSize({TODO});
+}
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetColour(const int& r, const int& g, const int& b, const int& alpha)
 {
-    color.r = r;
-    color.g = g;
-    color.b = b;
-    color.a = alpha;
+    rect.setFillColor(sf::Color(r, g, b, alpha));
 }
 ////////////////////////////////////////////////////////////
-Graph::Vertex::Vertex() 
+Graph::Vertex::Vertex() : visited(false)
 {
-    visited = false;
-    SetColour(0, 0, 0, 255);
-    // rect.setSize({tile_size, tile_size});
+    static int id = 0;
+#ifdef __GRAPH_LOG__
+    graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstrutkor domyslny klasy Graph::Vertex, id=", id);
+#endif
+    rect.setFillColor(sf::Color::White);
+    rect.setPosition
+    ({ 
+        (id * settings::tiles::TILE_WIDTH) % settings::window::WIDTH,
+        (id * settings::tiles::TILE_WIDTH * settings::tiles::TILE_HEIGHT) / settings::window::WIDTH
+    });
+    ++id;
 }
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetVisited(const bool & val) { visited = val; }
@@ -40,10 +58,15 @@ bool Graph::Vertex::IsVisited() const { return visited; }
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetDistance(const int & dist) { distance = dist; }
 ////////////////////////////////////////////////////////////
-Graph::Graph(const int rank, const int tile_size) : rank(rank) 
+Graph::Graph(const int rank) 
+    : rank(rank) 
 {
+#ifdef __GRAPH_LOG__
+    graph_logger.SetLevel(2);
+    graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Konstruktor klasy Graph");
+#endif
     graph = new Vertex[rank];
-}
+} 
 ////////////////////////////////////////////////////////////
 Graph::~Graph()
 {
@@ -55,6 +78,13 @@ void Graph::AddDirectedEdge(const int b, const int e, const int weight)
     graph[b].PushBack(Edge(e, weight));
 }
 ////////////////////////////////////////////////////////////
+void Graph::AddUndirectedEdge(const int b, const int e, const int weight)
+{
+    graph[b].PushBack(Edge(e, weight));
+    graph[e].PushBack(Edge(b, weight));
+    // TODO: Obliczanie indeksu reverse
+}
+////////////////////////////////////////////////////////////
 // void Graph::Wait(const int & miliseconds) const
 // {
 //     std::this_thread::sleep_for(std::chrono::milliseconds(miliseconds));
@@ -62,10 +92,11 @@ void Graph::AddDirectedEdge(const int b, const int e, const int weight)
 ////////////////////////////////////////////////////////////
 
 
+////////////////////////////////////////////////////////////
 void Graph::Dijkstra(const int s, const int t, MyVec<AlgLog> & log)
 {
 #ifdef __GRAPH_LOG__
-    graph_logger.SetLevel(3);
+    // graph_logger.SetLevel(3);
 
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 0, "Dijstra(", s, ", ", t, ")");
 

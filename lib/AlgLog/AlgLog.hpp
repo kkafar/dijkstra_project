@@ -2,8 +2,7 @@
 #define __ALGLOG_HPP__
 
 ////////////////////////////////////////////////////////////
-/// @brief TODO
-/// \brief
+// @brief TODO
 ////////////////////////////////////////////////////////////
 struct AlgLog
 {
@@ -13,6 +12,8 @@ struct AlgLog
     // vertex that is examined in current alg step
     int tested;
     ////////////////////////////////////////////////////////////
+    // @brief Ustawia wartość @field current na wartość @param current 
+    // oraz wartość @field tested na wartość @param tested
     void SetValues(int current, int tested);
     ////////////////////////////////////////////////////////////
 };

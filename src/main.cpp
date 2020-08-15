@@ -32,36 +32,40 @@ int main()
     ////////////////////////////////////////////////////////////
     // Ustawienia poszeczególnych loggerów.
     ////////////////////////////////////////////////////////////
-    myvec_logger.SetLevel(-1);
-    queue_logger.SetLevel(-1);
+    // myvec_logger.SetLevel(-1);
+    // queue_logger.SetLevel(-1);
     ////////////////////////////////////////////////////////////
 #endif
 
 #ifdef SFML_TEST
     TEST_BEG("Running SFML");
     {
-        ////////////////////////////////////////////////////////////
-        // Ustawienia okna
-        ////////////////////////////////////////////////////////////
-        constexpr size_t WINDOW_SIZE = 512;
-        constexpr size_t TILE_NUMBER = 16;
-        constexpr size_t TILE_SIZE = WINDOW_SIZE / TILE_NUMBER;
-        const std::string WINDOW_NAME = "Visualising Dijkstra's Shortest Path Algorithm";
-        ////////////////////////////////////////////////////////////
+
 
         ////////////////////////////////////////////////////////////
         // Utworzenie okna zgodnie z ustawieniami. 
         ////////////////////////////////////////////////////////////
-        sf::RenderWindow window (sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), WINDOW_NAME);
+        sf::RenderWindow window(sf::VideoMode(settings::window::WIDTH, settings::window::HEIGHT), settings::window::NAME);
         ////////////////////////////////////////////////////////////
 
+
         ////////////////////////////////////////////////////////////
-        sf::RectangleShape rect;
-        rect.setFillColor(sf::Color::Green);
-        rect.setPosition(300, 300);
+        // Do zbierania danych o koljenych posunięciach algorytmu
+        ////////////////////////////////////////////////////////////
+        MyVec<AlgLog> log;
         ////////////////////////////////////////////////////////////
 
-        // Graph graph(TILE_NUMBER * TILE_NUMBER);
+
+        ////////////////////////////////////////////////////////////
+        // Tworzenie grafu.  
+        ////////////////////////////////////////////////////////////
+        Graph graph(settings::tiles::TILES_IN_COL * settings::tiles::TILES_IN_ROW);
+        ////////////////////////////////////////////////////////////
+
+
+
+        ////////////////////////////////////////////////////////////
+        // Główna pętla programu
         ////////////////////////////////////////////////////////////
         while (window.isOpen())
         {
@@ -73,7 +77,8 @@ int main()
                     window.close();
                 
                 window.clear();
-                window.draw(rect);
+                // window.draw(rect);
+                graph.DrawTo(window);
                 window.display();
             }
         }       
