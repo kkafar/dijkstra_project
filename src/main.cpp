@@ -48,14 +48,6 @@ int main()
 
 
         ////////////////////////////////////////////////////////////
-        // Utworzenie okna zgodnie z ustawieniami. 
-        ////////////////////////////////////////////////////////////
-        sf::RenderWindow window(sf::VideoMode(settings::window::WIDTH, settings::window::HEIGHT), settings::window::NAME);
-        window.setFramerateLimit(100);
-        ////////////////////////////////////////////////////////////
-
-
-        ////////////////////////////////////////////////////////////
         // Do zbierania danych o koljenych posunięciach algorytmu
         ////////////////////////////////////////////////////////////
         MyVec<AlgLog> log;
@@ -69,15 +61,17 @@ int main()
         Graph graph(settings::tiles::TILES_IN_COL * settings::tiles::TILES_IN_ROW);
         timer.Stop();
         std::cout << "Czas alokacji grafu: " << timer.GetElapsedTime() << "\n";
+        graph.Dijkstra(settings::START, settings::END, log);
         ////////////////////////////////////////////////////////////
 
 
-        sf::RectangleShape rect;
-        rect.setPosition({300, 300});
-        rect.setFillColor(sf::Color::Red);
-        rect.setSize({100, 100});
-        rect.setOutlineThickness(-1);
-        rect.setOutlineColor(sf::Color::Black);
+        ////////////////////////////////////////////////////////////
+        // Utworzenie okna zgodnie z ustawieniami. 
+        ////////////////////////////////////////////////////////////
+        sf::RenderWindow window(sf::VideoMode(settings::window::WIDTH, settings::window::HEIGHT), settings::window::NAME);
+        window.setFramerateLimit(settings::window::MAX_FRAMERATE);
+        ////////////////////////////////////////////////////////////
+
 
         ////////////////////////////////////////////////////////////
         // Główna pętla programu
@@ -90,12 +84,13 @@ int main()
             {
                 if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) == true)
                     window.close();
-                
-                window.clear();
-                graph.DrawTo(window);
-                window.draw(rect);
-                window.display();
             }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(settings::FRAME_WAIT_TIME));
+            window.clear();
+            graph.DrawTo(window);
+            window.display();
+            graph.MakeStep(log);
         }       
         ////////////////////////////////////////////////////////////
     }

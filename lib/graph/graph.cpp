@@ -80,7 +80,7 @@ Graph::Vertex::Vertex() : visited(false)
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetVisited(const bool & val) { visited = val; }
 ////////////////////////////////////////////////////////////
-bool Graph::Vertex::IsVisited() const { return visited; }
+[[nodiscard]] bool Graph::Vertex::IsVisited() const { return visited; }
 ////////////////////////////////////////////////////////////
 void Graph::Vertex::SetDistance(const int & dist) { distance = dist; }
 ////////////////////////////////////////////////////////////
@@ -92,6 +92,31 @@ Graph::Graph(const int rank)
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Konstruktor klasy Graph");
 #endif
     graph = new Vertex[rank];
+
+    // Dodawanie krawędzi (budowanie grafu)
+    // Dodajemy krawędzie nieskierowane do wierzchołka na prawo i pod ==>
+    // dlatego ostatni rząd oraz ostatnią kolumnę osobno
+    int rows = rank / settings::tiles::TILES_IN_ROW;
+    int cols = rank / settings::tiles::TILES_IN_COL;
+    int id = 0; 
+
+    for (int row = 0; row < rows - 1; ++row)
+    {
+        for (int col = 0; col < cols - 1; ++col, ++id)
+        {
+            AddUndirectedEdge(id, id + 1, 1);
+            AddUndirectedEdge(id, id + settings::tiles::TILES_IN_ROW, 7);
+        }
+        ++id;
+    }
+
+    for (int col = 0; col < cols - 1; ++col, ++id)
+        AddUndirectedEdge(id, id + 1, 5);
+    
+    id = settings::tiles::TILES_IN_ROW - 1;
+
+    for (int row = 0; row < rows - 1; ++row, id = id + settings::tiles::TILES_IN_ROW)
+        AddUndirectedEdge(id, id + settings::tiles::TILES_IN_ROW, 7);
 }  
 ////////////////////////////////////////////////////////////
 Graph::~Graph()
@@ -132,17 +157,20 @@ void Graph::Dijkstra(const int s, const int t, MyVec<AlgLog> & log)
 #endif /* __GRAPH_LOG__ */
 
     MinPriorQueue<int> queue;
+    AlgLog logger;
 
-    // dodajemy wierzchołek startowy do kolejki. 
+    // Dodajemy wierzchołek startowy do kolejki. 
     queue.Push(s, 0);
+
+
+    // Ustawiamy wartości dla wierzchołka początkowego i końcowego
+    graph[s].SetColour(0, 0, 200);
+    graph[t].SetColour(0, 0, 200);
+
 
     // Ustawiamy parametry dla wierzchołka startowego
     graph[s].SetDistance(0);
-    // kolor na zielony (jako obecnie rozważany wierzchołek)
-    // graph[s].SetColour(0, 255, 0);
 
-    // Wait(1000);
-    
     int current_vertex, edge_end, distance;
 
     while (!queue.IsEmpty())
@@ -151,12 +179,23 @@ void Graph::Dijkstra(const int s, const int t, MyVec<AlgLog> & log)
         current_vertex = queue.Front();
         queue.Pop();
 
+        if (current_vertex == t)
+        {
+            // graph[t].rect.setFillColor(sf::Color::Yellow);
+            break;
+        }
+
         graph[current_vertex].SetVisited(true);
 
         // przeglądamy wszystkich sąsiadów current_vertex
         for (int v = 0; v < graph[current_vertex].GetSize(); ++v)
         {
             edge_end = graph[current_vertex][v].GetEnd();
+
+
+            logger.SetValues(current_vertex, edge_end);
+            log.PushBack(logger);
+
 
             // jeżeli sąsiad nie jest odwiedzony 
             if (!graph[edge_end].IsVisited())
@@ -173,6 +212,38 @@ void Graph::Dijkstra(const int s, const int t, MyVec<AlgLog> & log)
         }
     }
 
+
+}
+////////////////////////////////////////////////////////////
+void Graph::Vertex::ChangeTone(const uint& delta_r, const uint& delta_g, const uint& delta_b, const uint& delta_alpha)
+{
+    sf::Color color = rect.getFillColor();
+
+    int r = color.r - delta_r, g = color.g - delta_g, b = color.b - delta_g;
+
+    if (r < 0)
+        r = 0;
+
+    if (g < 0)
+        g = 0;
+
+    if (b < 0)
+        b = 0;
+    
+    rect.setFillColor(sf::Color(r, g, b, 255));
+}
+////////////////////////////////////////////////////////////
+void Graph::MakeStep(MyVec<AlgLog>& log)
+{
+    static int step_number = 0;
+    if (step_number < log.GetSize())
+    {
+        // graph[ log[step_number].current ].SetColour(250, 0, 0);
+        graph[ log[step_number].current ].ChangeTone(0, settings::tiles::COLOR_MODIFIER, settings::tiles::COLOR_MODIFIER);
+        ++step_number;
+    }
+    else
+        return;
 
 }
 ////////////////////////////////////////////////////////////

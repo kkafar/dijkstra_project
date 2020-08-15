@@ -9,7 +9,7 @@ struct AlgLog
     ////////////////////////////////////////////////////////////
     // current vertex
     int current;
-    // vertex that is examined in current alg step
+    // wierzchołek na który patrzy algorytm w danym kroku 
     int tested;
     ////////////////////////////////////////////////////////////
     // @brief Ustawia wartość @field current na wartość @param current 
