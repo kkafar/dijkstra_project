@@ -1,5 +1,5 @@
-all: main.o log.o graph.o
-	g++ --std=c++17 ./src/main.o ./lib/log/log.o ./lib/graph/graph.o -lsfml-graphics -lsfml-window -lsfml-system -o ./bin/main
+all: main.o log.o graph.o Timer.o
+	g++ --std=c++17 ./src/main.o ./lib/log/log.o ./lib/graph/graph.o ./lib/Timer/Timer.o -lsfml-graphics -lsfml-window -lsfml-system -o ./bin/main
 
 
 main.o: ./src/main.cpp ./lib/headers.hpp ./lib/linkedlist/linkedlist.hpp ./lib/graph/graph.hpp ./lib/MyVec/MyVec.hpp
@@ -15,6 +15,9 @@ graph.o: ./lib/graph/graph.cpp ./lib/graph/graph.hpp
 
 #linkedlist.o: ./lib/linkedlist/linkedlist.hpp 
 #	g++ --std=c++17 -c ./lib/linkedlist/linkedlist.hpp -o ./lib/linkedlist/linkedlist.o
+
+Timer.o: ./lib/Timer/Timer.cpp ./lib/Timer/Timer.hpp
+	g++ --std=c++17 -c ./lib/Timer/Timer.cpp -o ./lib/Timer/Timer.o
 
 
 run_log:
