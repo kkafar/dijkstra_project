@@ -29,8 +29,11 @@ private:
     ////////////////////////////////////////////////////////////
     // Zmienne statyczne służące do inicjalizacji wektora
     ////////////////////////////////////////////////////////////
-    static constexpr int INITIAL_NO_PARAM_SIZE = 2;
+    // Domyślny początkowy rozmiar wektora
+    static constexpr int INITIAL_NO_PARAM_SIZE = 100;
+    // Czynnik o jaki jest powiększany poczatkowy rozmiar tablicy podany przez użytkownika 
     static constexpr float SIZE_FACTOR = 3.0f;
+    // Czynnik o który powiększana jest tablica przy realokacji (jako raozmiar brana jest cecha z EXT_FACTOR * <stary rozmiar>)
     static constexpr float EXT_FACTOR = 2.0f;
     ////////////////////////////////////////////////////////////
 public:
