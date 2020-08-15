@@ -23,11 +23,16 @@ Graph::Vertex::Vertex(sf::Color color, bool visited) : visited(visited)
 {
     static int id = 0;
     rect.setFillColor(color);
-    rect.setPosition
-    ({ 
+    rect.setPosition ({ 
         (id * settings::tiles::TILE_WIDTH) % settings::window::WIDTH,
         (id * settings::tiles::TILE_WIDTH * settings::tiles::TILE_HEIGHT) / settings::window::WIDTH
     });
+    rect.setSize({
+        settings::tiles::TILE_WIDTH, 
+        settings::tiles::TILE_HEIGHT
+    });
+    rect.setOutlineColor(sf::Color::Black);
+    rect.setOutlineThickness(-3);
     ++id;
     // rect.setSize({TODO});
 }
@@ -40,15 +45,36 @@ void Graph::Vertex::SetColour(const int& r, const int& g, const int& b, const in
 Graph::Vertex::Vertex() : visited(false)
 {
     static int id = 0;
+
 #ifdef __GRAPH_LOG__
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Konstrutkor domyslny klasy Graph::Vertex, id=", id);
 #endif
+
     rect.setFillColor(sf::Color::White);
-    rect.setPosition
-    ({ 
+    rect.setPosition({ 
         (id * settings::tiles::TILE_WIDTH) % settings::window::WIDTH,
-        (id * settings::tiles::TILE_WIDTH * settings::tiles::TILE_HEIGHT) / settings::window::WIDTH
+        (id / settings::tiles::TILES_IN_ROW) * settings::tiles::TILE_HEIGHT
     });
+
+#ifdef __GRAPH_LOG__
+    graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Ustawiam plytke na poz.: (", 
+        (id * settings::tiles::TILE_WIDTH) % settings::window::WIDTH, ", ",
+        (id / settings::tiles::TILES_IN_ROW) * settings::tiles::TILE_HEIGHT, ")");
+#endif
+
+    rect.setSize({
+        settings::tiles::TILE_WIDTH, 
+        settings::tiles::TILE_HEIGHT
+    });
+
+#ifdef __GRAPH_LOG__
+    graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Rozmiar plytki: (", 
+        settings::tiles::TILE_WIDTH, ", ",
+        settings::tiles::TILE_HEIGHT, ")");
+#endif
+ 
+    rect.setOutlineColor(sf::Color::Black);
+    rect.setOutlineThickness(-3);
     ++id;
 }
 ////////////////////////////////////////////////////////////
@@ -66,7 +92,7 @@ Graph::Graph(const int rank)
     graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 1, "Konstruktor klasy Graph");
 #endif
     graph = new Vertex[rank];
-} 
+}  
 ////////////////////////////////////////////////////////////
 Graph::~Graph()
 {
@@ -167,6 +193,7 @@ void Graph::DrawTo(sf::RenderWindow& window) const
 {
     for (int i = 0; i < rank; ++i)
     {
+        // graph_logger.Message(__FILE__, __LINE__, Log::MessageType::INFO, 2, "Rysuje plytke ", i);
         window.draw(graph[i].rect);
     }
 }

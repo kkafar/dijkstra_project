@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////
 // Napis informujący o wersji programu.
 ////////////////////////////////////////////////////////////
-const std::string VERSION = "v0.6 Running SFML";
+const std::string VERSION = "v0.7 Printing graph";
 ////////////////////////////////////////////////////////////
 
 
@@ -51,6 +51,7 @@ int main()
         // Utworzenie okna zgodnie z ustawieniami. 
         ////////////////////////////////////////////////////////////
         sf::RenderWindow window(sf::VideoMode(settings::window::WIDTH, settings::window::HEIGHT), settings::window::NAME);
+        window.setFramerateLimit(100);
         ////////////////////////////////////////////////////////////
 
 
@@ -61,15 +62,22 @@ int main()
         ////////////////////////////////////////////////////////////
 
 
-        timer.Start();
         ////////////////////////////////////////////////////////////
         // Tworzenie grafu.  
         ////////////////////////////////////////////////////////////
+        timer.Start();
         Graph graph(settings::tiles::TILES_IN_COL * settings::tiles::TILES_IN_ROW);
-        ////////////////////////////////////////////////////////////
         timer.Stop();
-
         std::cout << "Czas alokacji grafu: " << timer.GetElapsedTime() << "\n";
+        ////////////////////////////////////////////////////////////
+
+
+        sf::RectangleShape rect;
+        rect.setPosition({300, 300});
+        rect.setFillColor(sf::Color::Red);
+        rect.setSize({100, 100});
+        rect.setOutlineThickness(-1);
+        rect.setOutlineColor(sf::Color::Black);
 
         ////////////////////////////////////////////////////////////
         // Główna pętla programu
@@ -84,8 +92,8 @@ int main()
                     window.close();
                 
                 window.clear();
-                // window.draw(rect);
                 graph.DrawTo(window);
+                window.draw(rect);
                 window.display();
             }
         }       
