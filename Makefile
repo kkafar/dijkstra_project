@@ -16,11 +16,14 @@ graph.o: ./lib/graph/graph.cpp ./lib/graph/graph.hpp
 #linkedlist.o: ./lib/linkedlist/linkedlist.hpp 
 #	g++ --std=c++17 -c ./lib/linkedlist/linkedlist.hpp -o ./lib/linkedlist/linkedlist.o
 
+
 Timer.o: ./lib/Timer/Timer.cpp ./lib/Timer/Timer.hpp
 	g++ --std=c++17 -c ./lib/Timer/Timer.cpp -o ./lib/Timer/Timer.o
 
+
 AlgLog.o: ./lib/AlgLog/AlgLog.hpp ./lib/AlgLog/AlgLog.cpp
 	g++ --std=c++17 -c ./lib/AlgLog/AlgLog.cpp -o ./lib/AlgLog/AlgLog.o
+
 
 run_log:
 	./bin/main > ./bin/output_main.txt
