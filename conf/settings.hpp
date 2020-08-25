@@ -36,12 +36,12 @@ namespace settings
         // Ustawienia grafu
         ////////////////////////////////////////////////////////////
         // Liczba płytek w wierszu
-        constexpr size_t TILES_IN_ROW = 32;
+        constexpr size_t TILES_IN_ROW = 4;
         // Liczba płytek w kolumnie
-        constexpr size_t TILES_IN_COL = 32;
+        constexpr size_t TILES_IN_COL = 4;
         constexpr size_t TILE_WIDTH = window::WIDTH / TILES_IN_ROW;
         constexpr size_t TILE_HEIGHT = window::HEIGHT / TILES_IN_COL;
-        constexpr uint COLOR_MODIFIER = 20;
+        constexpr uint COLOR_MODIFIER = 100;
         ////////////////////////////////////////////////////////////
     }
     ////////////////////////////////////////////////////////////
@@ -51,8 +51,9 @@ namespace settings
     // 
     ////////////////////////////////////////////////////////////
     constexpr uint FRAME_WAIT_TIME = 20;
-    constexpr uint START = 40;
-    constexpr uint END = 700; 
+    constexpr uint START = 0;
+    constexpr uint END = 6; 
+    constexpr uint INF = 99999999;
     ////////////////////////////////////////////////////////////
 
 }
